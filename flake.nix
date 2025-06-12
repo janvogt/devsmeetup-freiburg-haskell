@@ -5,14 +5,16 @@
   };
   outputs = { self, nixpkgs, utils }:
     utils.lib.eachDefaultSystem (system:
-      let pkgs = nixpkgs.legacyPackages.${system};
+      let
+        pkgs = nixpkgs.legacyPackages.${system};
+        hpgkgs = pkgs.haskell.packages.ghc912;
       in {
         devShell = pkgs.mkShell {
           buildInputs = with pkgs; [
+            hpgkgs.ghc
+            hpgkgs.haskell-language-server
             nodejs
-            ghc
             cabal-install
-            haskell-language-server
             ghcid
           ];
         };
