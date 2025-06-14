@@ -1,4 +1,4 @@
-import { Emitter } from "./emission-source";
+import { Emitter, makeEmitter } from "./emitter";
 import { EmissionFactors, getFactorFromDatabase } from "./emission-factors";
 
 export type EmitterFormValues = {
@@ -53,6 +53,38 @@ export function getInitialFormValues(
   }
 
   return valuesFromEmitter;
+}
+
+export function emitterFromFormValues(formValues: EmitterFormValues) {
+  return makeEmitter({
+    description: formValues.description,
+    emitterId: formValues.emitterId,
+    quantity:
+      formValues.quantity && formValues.quantityUncertainty != null
+        ? {
+            value: Number(formValues.quantity),
+            uncertainty: formValues.quantityUncertainty,
+          }
+        : undefined,
+    emissions:
+      formValues.enterEmissionsManually &&
+      formValues.emissions &&
+      formValues.emissionsUncertainty != null
+        ? {
+            value: Number(formValues.emissions),
+            uncertainty: formValues.emissionsUncertainty,
+          }
+        : undefined,
+    factor:
+      formValues.factorMode === "manual" &&
+      formValues.factor &&
+      formValues.factorUncertainty != null
+        ? {
+            value: Number(formValues.factor),
+            uncertainty: formValues.factorUncertainty,
+          }
+        : undefined,
+  });
 }
 
 function calculateEmissionsInTons(
