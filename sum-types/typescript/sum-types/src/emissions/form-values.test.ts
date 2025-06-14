@@ -1,8 +1,8 @@
 import {
-  EMISSION_FACTOR_TABLE,
-  getInitialFormValues,
   makeEmitter,
 } from "./emission-source";
+import { getInitialFormValues } from "./form-values";
+import { EMISSION_FACTOR_TABLE } from "./emission-factors";
 
 describe("getInitialFormValues() sets all the form default values", () => {
   test("a simple emitter with emission factor taken from database", () => {
